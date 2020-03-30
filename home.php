@@ -11,13 +11,14 @@ if(!isset($_SESSION['myusername']))
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <?php include_once './layouts/header.php'; ?>
-    <title>Sistema</title>
+    <title>Home</title>
 </head>
 <body>
     <?php include_once './layouts/nav.php'; ?>
+    <h3>Home</h3>
     <?php include_once './layouts/footer.php'; ?>
 </body>
 </html>

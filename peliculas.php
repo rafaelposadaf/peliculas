@@ -3,8 +3,6 @@ session_start();
 
 if(!isset($_SESSION['myusername']))
     header("location: login.php");
-//else
-    //header("location: ./views/movies.php");
 
 include_once 'config/conexion.php';
 //LEER Usuarios
@@ -81,7 +79,7 @@ $gsent->execute();
             r=confirm("Esta seguro que desea eliminar esta pelicula?");
             if(!r)
                 return;
-            url= './Controllers/peliculasController.php';
+            url= './Models/peliculasModel.php';
             let formData = new FormData();
             formData.append('Action', 'eliminarPelicula');
             formData.append('id', peliculaId);
@@ -97,7 +95,7 @@ $gsent->execute();
             } else {
                 if(xhr.response=='OK') {
                     alert("Se ha eliminado la película");
-                    setTimeout(function(){ window.location.href = "users.php"; }, 1000);
+                    setTimeout(function(){ window.location.href = "peliculas.php"; }, 1000);
                 }
                 else
                     alert("Hubo un error eliminado el usuario");

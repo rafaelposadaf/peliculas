@@ -85,7 +85,7 @@ if(!isset($_SESSION['myusername']))
 
     function validarTitulo()
     {
-        url= './Controllers/peliculasController.php';
+        url= './Models/peliculasModel.php';
 
         let formData = new FormData();
         formData.append('Action', 'validarTitulo');
@@ -113,7 +113,7 @@ if(!isset($_SESSION['myusername']))
 
     function guardarDatos()
     {
-        url='./Controllers/peliculasController.php';
+        url='./Models/peliculasModel.php';
         Action='guardarPelicula';
         respuesta=enviarDatosAjax(url,Action);
         if(respuesta=='OK') {
@@ -128,7 +128,7 @@ if(!isset($_SESSION['myusername']))
 
     function actualizarDatos()
     {
-        url='./Controllers/peliculasController.php';
+        url='./Models/peliculasModel.php';
         Action='actualizarPelicula';
         respuesta=enviarDatosAjax(url,Action);
         if(respuesta=='OK') {

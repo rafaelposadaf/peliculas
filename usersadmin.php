@@ -96,7 +96,7 @@ if(!isset($_SESSION['myusername']))
 
     function validarNickname()
     {
-        url= './Controllers/usersController.php';
+        url= './Models/usersModel.php';
         let formData = new FormData();
         formData.append('Action', 'validarNickName');
         formData.append('nickname', $('#nickname').val());
@@ -124,7 +124,7 @@ if(!isset($_SESSION['myusername']))
 
     function guardarDatos()
     {
-        url='./Controllers/usersController.php';
+        url='./Models/usersModel.php';
         Action='guardarUsuario';
         respuesta=enviarDatosAjax(url,Action);
         if(respuesta=='OK') {
@@ -140,7 +140,7 @@ if(!isset($_SESSION['myusername']))
 
     function actualizarDatos()
     {
-        url='./Controllers/usersController.php';
+        url='./Model/usersModel.php';
         Action='actualizarUsuario';
         respuesta=enviarDatosAjax(url,Action);
         if(respuesta=='OK') {
