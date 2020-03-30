@@ -1,5 +1,4 @@
 Este repositorio es un desarrollo para la gestion de usuarios y peliculas
-//INTRUCCIONES DE INSTALACION
 
 ## Requerimientos
  - Base de datos: Mysql
@@ -31,7 +30,7 @@ CREATE TABLE `movies` (
 
 INSERT INTO `users` (`nombre`, `nickname`, `password`) VALUES ('admin', 'Admin1', 'Admin1')
 
-## Instalación rapida (recomendada)
+## Instrucciones para una instalación rapida (recomendada)
  - Instale laragon de https://laragon.org/ (incluye apache,mysql y php)
  - Ejecutar scripts de base de datos para creación de tablas
  - Crear una carpeta dentro de laragon/www/ (sin espacios)
