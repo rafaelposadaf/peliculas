@@ -31,10 +31,11 @@ CREATE TABLE `movies` (
 
 INSERT INTO `users` (`nombre`, `nickname`, `password`) VALUES ('admin', 'Admin1', 'Admin1')
 
- - Instalacion rapida: Instale laragon de https://laragon.org/
+## Instalación rapida (recomendada)
+ - Instale laragon de https://laragon.org/ (incluye apache,mysql y php)
  - Ejecutar scripts de base de datos para creación de tablas
  - Crear una carpeta dentro de laragon/www/ (sin espacios)
  - Dentro de esa carpeta clone el proyecto o descomprimalo
  - Ejecute laragon e inicie todos los servicios
  - Abra un navegador y dirijase a localhost/[nombre de la carpeta]
- - ingrese como nickname: Admin1 Password: Admin1
+ - Ingrese como nickname: Admin1 Password: Admin1
