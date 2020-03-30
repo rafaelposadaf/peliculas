@@ -38,7 +38,7 @@ if(!isset($_SESSION['myusername']))
     <?php include_once './layouts/header.php'; ?>
     <title>Usuarios</title>
     <?php include_once './layouts/nav.php'; ?>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
     <div class="col-md-11">
@@ -79,94 +79,107 @@ if(!isset($_SESSION['myusername']))
             return;
 
         //validar usuario ajax
+        /*hola=validarNickname();
+        alert(hola);
         if(!validarNickname()) //en caso de ser falso no continua
-            return;
+            return;*/
         //validar contraseña
-        if($('#password').val()!=$('#repeat_password').val()) {
+        if($('#password').val() != $('#repeat_password').val()) {
             alert('Las constraseñas ingresadas no coinciden');
-            return
+            return;
         }
-        //enviar datos ajax
-        //AJAX
-
-        //enviarDatos();
-
-        //recargar datos
+        if($('#user_id').val()=='')
+            guardarDatos();
+        else
+            actualizarDatos();
     }
 
     function validarNickname()
     {
-        $.ajax({
-            type: 'POST',
-            url: './Controllers/usersController.php',
-            data: {
-                Action: 'validarNickName',
-                nickname: $('#nickname').val(),
-                id: $('#user_id').val(),
-            },
-            success: function(resultado)
-            {
-                if(resultado=='')
-                    return true;
-                else
-                    alert("El nickname ya esta en uso por otro usuario");
-                return false;
-            }
-        });
+        url= './Controllers/usersController.php';
+        let formData = new FormData();
+        formData.append('Action', 'validarNickName');
+        formData.append('nickname', $('#nickname').val());
+        formData.append('id', $('#user_id').val());
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', url, false);
+
+        try {
+            xhr.send(formData);
+        if (xhr.status != 200) {
+            alert(`Error ${xhr.status}: ${xhr.statusText}`);
+        } else {
+            if(xhr.response==0);
+                return true;
+        }
+        } catch(err) {
+            alert("Request failed");
+        }
+        return false;
     }
 
-    function enviarDatos()
+    function guardarDatos()
     {
-        $.ajax({
-            type: 'POST',
-            url: './Controllers/usersController.php',
-            data: {
-                Action: 'guardarUsuario',
+        url='./Controllers/usersController.php';
+        Action='guardarUsuario';
+        respuesta=enviarDatosAjax(url,Action);
+        if(respuesta=='OK') {
 
-                nombre: $('#nombre').val(), 
-                nickname: $('#nickname').val(),
-                password: $('#password').val(),
-                id: $('#user_id').val(),
-            },
-            success: function(resultado)
-            {
-                if(resultado=='OK') {
-
-                    alert("Usuario guardado exitosamente");
-                    //vaciar campos
-                    limpiarCampos();
-                }
-                else
-                    alert("Hubo un error al intentar guardar el usuario");
-            }
-        });
-
+            alert("Usuario guardado exitosamente");
+            //vaciar campos
+            limpiarCampos();
+        }
+        else
+            alert("Hubo un error al intentar guardar el usuario");
     }
 
-    /*function enviarDatosAjax(url,Action)
+    function actualizarDatos()
     {
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                Action: Action,
+        url='./Controllers/usersController.php';
+        Action='actualizarUsuario';
+        respuesta=enviarDatosAjax(url,Action);
+        if(respuesta=='OK') {
 
-                nombre: $('#nombre').val(), 
-                nickname: $('#nickname').val(),
-                password: $('#password').val(),
-                id: $('#user_id').val(),
-            },
-            success: function(resultado)
-            {
-                return resultado;
-            }
-        });
-    }*/
+            alert("Usuario actualizado exitosamente");
+            //limpiarCampos();
+        }
+        else
+            alert("Hubo un error al intentar actualizar el usuario");
+    }
+
+    function enviarDatosAjax(url,Action)
+    {
+        let formData = new FormData();
+        formData.append('Action', Action);
+        formData.append('nombre', $('#nombre').val());
+        formData.append('nickname', $('#nickname').val());
+        formData.append('password', $('#password').val());
+        formData.append('id', $('#user_id').val());
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', url, false);
+
+        try {
+            xhr.send(formData);
+        if (xhr.status != 200) {
+            alert(`Error ${xhr.status}: ${xhr.statusText}`);
+        } else {
+            //alert(xhr.response);
+            return xhr.response;
+        }
+        } catch(err) {
+            alert("Request failed");
+        }
+        return "";
+    }
 
     function validarReglasNegocio()
     {
         //el usuario debe tener al menos 5 caracteres
-        if($('#nombre').val().trim.length < 5) {
+        if($('#nombre').val().trim().length < 5) {
             alert('El nombre de usuario debe contener minimo 5 caracteres válidos');
             return false
         }

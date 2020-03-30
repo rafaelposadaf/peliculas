@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 if(!$_POST || !isset($_SESSION['myusername']))
     die();
 
@@ -37,7 +39,7 @@ if($_POST['Action']=="validarNickName")
     $condicionUsuarioExistente="";
     if($id!="")
         $condicionUsuarioExistente=" AND id<>$id";
-    $sql = "SELECT id FROM users WHERE nickname='$nickname' $condicionUsuarioExistente";
+    $sql = "SELECT COUNT(id) FROM users WHERE nickname='$nickname' $condicionUsuarioExistente";
 
     $sentencia_sql = $pdo->prepare($sql);
     $sentencia_sql->execute();
@@ -51,3 +53,29 @@ if($_POST['Action']=="validarNickName")
     echo $resultado;
     die();
 }
+
+if($_POST['Action']=="actualizarUsuario")
+{
+    //validacion backend de los datos
+    if(!isset($_POST['nombre']) && !isset($_POST['nickname']) && !isset($_POST['password']) && !isset($_POST['id'])) {
+        echo "";
+        die();
+    }
+    $nombre =  $_POST['nombre'];
+    $nickname = $_POST['nickname'];
+    $password = $_POST['password'];
+    $id = $_POST['id'];
+
+    $sql = "UPDATE users SET nombre=?, nickname=?, password=? WHERE id=?";
+    $pdo->prepare($sql)->execute([$nombre, $nickname, $password, $id]);
+
+    //cerramos conexión base de datos y sentencia
+    $sentencia_sql = null;
+    $pdo = null;
+
+    //Imprimimos respuesta operación
+    echo "OK";
+    die();
+}
+
+?>

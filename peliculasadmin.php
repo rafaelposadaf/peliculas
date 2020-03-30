@@ -7,7 +7,7 @@ if(!isset($_SESSION['myusername']))
     $titulo="";
     $sinopsis="";
     $anio_lanzada="";
-    $pelicula_id="";
+    $movie_id="";
     if($_GET && $_GET['id']!="") {
 
         include_once 'config/conexion.php';
@@ -17,7 +17,7 @@ if(!isset($_SESSION['myusername']))
         $pelicula = $sentencia_sql->fetch();
         $titulo=$pelicula['titulo'];
         $sinopsis=$pelicula['sinopsis'];
-        $pelicula_id=$pelicula['id'];
+        $movie_id=$pelicula['id'];
 
         $titulo_pagina="Editar película";
         $nombre_boton="Actualizar";
@@ -37,7 +37,7 @@ if(!isset($_SESSION['myusername']))
     <?php include_once './layouts/header.php'; ?>
     <title>Películas</title>
     <?php include_once './layouts/nav.php'; ?>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
     <div class="col-md-11">
@@ -72,60 +72,100 @@ if(!isset($_SESSION['myusername']))
         //Validacion reglas dde negocio
         if(!validarReglasNegocio())
             return;
+
+        if(!validarTitulo())
+            return;
         //AJAX
-        enviarDatos();
+        if($('#movie_id').val()=='')
+            guardarDatos();
+        else
+            actualizarDatos();
 
         //recargar datos
     }
 
-    function validarPelicula()
+    function validarTitulo()
     {
-        $.ajax({
-            type: 'POST',
-            url: './Controllers/peliculasController.php',
-            data: {
-                Action: 'validarPelicula',
-                nickname: $('#titulo').val(),
-                anio_lanzada: $('#anio_lanzada').val(),
-                id: $('#pelicula_id').val(),
-            },
-            success: function(resultado)
-            {
-                if(resultado=='')
-                    return true;
-                else
-                    alert("La pelicula y el año lanzado ya existen");
-                return false;
-            }
-        });
+        url= './Controllers/peliculasController.php';
+
+        let formData = new FormData();
+        formData.append('Action', 'validarTitulo');
+        formData.append('titulo', $('#titulo').val());
+        formData.append('anio_lanzada', $('#anio_lanzada').val());
+        formData.append('id', $('#movie_id').val());
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', url, false);
+
+        try {
+            xhr.send(formData);
+        if (xhr.status != 200) {
+            alert(`Error ${xhr.status}: ${xhr.statusText}`);
+        } else {
+            if(xhr.response==0);
+                return true;
+        }
+        } catch(err) {
+            alert("Request failed");
+        }
+        return false;
     }
 
-    function enviarDatos()
+    function guardarDatos()
     {
-        $.ajax({
-            type: 'POST',
-            url: './Controllers/PeliculasController.php',
-            data: {
-                Action: 'guardarPelicula',
+        url='./Controllers/peliculasController.php';
+        Action='guardarPelicula';
+        respuesta=enviarDatosAjax(url,Action);
+        if(respuesta=='OK') {
 
-                nickname: $('#titulo').val(),
-                anio_lanzada: $('#anio_lanzada').val(),
-                sinopsis: $('#sinopsis').val(),
-                id: $('#movie_id').val(),
-            },
-            success: function(resultado)
-            {
-                if(resultado=='OK') {
+            alert("Pelicula guardada exitosamente");
+            //vaciar campos
+            limpiarCampos();
+        }
+        else
+            alert("Hubo un error al intentar guardar la película");
+    }
 
-                    alert("Película guardada exitosamente");
-                    //vaciar campos
-                    limpiarCampos();
-                }
-                else
-                    alert("Hubo un error al intentar guardar la película");
-            }
-        });
+    function actualizarDatos()
+    {
+        url='./Controllers/peliculasController.php';
+        Action='actualizarPelicula';
+        respuesta=enviarDatosAjax(url,Action);
+        if(respuesta=='OK') {
 
+            alert("Película actualizada exitosamente");
+            //limpiarCampos();
+        }
+        else
+            alert("Hubo un error al intentar actualizar la película");
+    }
+
+    function enviarDatosAjax(url,Action)
+    {
+        let formData = new FormData();
+        formData.append('Action', Action);
+        formData.append('titulo', $('#titulo').val());
+        formData.append('sinopsis', $('#sinopsis').val());
+        formData.append('anio_lanzada', $('#anio_lanzada').val());
+        formData.append('id', $('#movie_id').val());
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', url, false);
+
+        try {
+            xhr.send(formData);
+        if (xhr.status != 200) {
+            alert(`Error ${xhr.status}: ${xhr.statusText}`);
+        } else {
+            //alert(xhr.response);
+            return xhr.response;
+        }
+        } catch(err) {
+            alert("Request failed");
+        }
+        return "";
     }
 
     function validarReglasNegocio()
@@ -134,7 +174,7 @@ if(!isset($_SESSION['myusername']))
             alert('El título de la película es requerido');
             return false;
         }
-        if($('#anio_lanzada').val().trim=='') {
+        if($('#anio_lanzada').val().trim()=='') {
             alert('El año de lanzamiento de la película es requerido');
             return false;
         }

@@ -59,7 +59,7 @@ $gsent->execute();
                     <td><?php echo $pelicula['anio_lanzada']; ?></td>
                     <td><?php echo $pelicula['sinopsis']; ?></td>
                     <td>
-                        <a type="button" href="peliculassadmin.php?id=<?php echo $pelicula['id']; ?>" class="btn btn-warning btn-sm">editar</a>
+                        <a type="button" href="peliculasadmin.php?id=<?php echo $pelicula['id']; ?>" class="btn btn-warning btn-sm">editar</a>
                         <a type="button" href="index.php&id=<?php echo $pelicula['id']; ?>" class="btn btn-danger btn-sm">eliminar</a>
                     </td>
                 </tr>
