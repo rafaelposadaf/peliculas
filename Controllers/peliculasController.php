@@ -82,3 +82,26 @@ if($_POST['Action']=="actualizarPelicula")
     echo "OK";
     die();
 }
+
+if($_POST['Action']=="eliminarPelicula")
+{
+    //validacion backend de los datos
+    if(!isset($_POST['id'])) {
+        echo "";
+        die();
+    }
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM movies WHERE id=?";
+    $pdo->prepare($sql)->execute([$id]);
+
+    //cerramos conexión base de datos y sentencia
+    $sentencia_sql = null;
+    $pdo = null;
+
+    //Imprimimos respuesta operación
+    echo "OK";
+    die();
+}
+
+?>

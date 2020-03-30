@@ -60,7 +60,7 @@ $gsent->execute();
                     <td><?php echo $pelicula['sinopsis']; ?></td>
                     <td>
                         <a type="button" href="peliculasadmin.php?id=<?php echo $pelicula['id']; ?>" class="btn btn-warning btn-sm">editar</a>
-                        <a type="button" href="index.php&id=<?php echo $pelicula['id']; ?>" class="btn btn-danger btn-sm">eliminar</a>
+                        <a type="button" onclick="eliminarPelicula(<?php echo $pelicula['id']; ?>)" class="btn btn-danger btn-sm">eliminar</a>
                     </td>
                 </tr>
                 <?php
@@ -76,6 +76,36 @@ $gsent->execute();
         $(document).ready( function () {
             $('#table_id').DataTable();
         } );
+        function eliminarPelicula(peliculaId)
+        {
+            r=confirm("Esta seguro que desea eliminar esta pelicula?");
+            if(!r)
+                return;
+            url= './Controllers/peliculasController.php';
+            let formData = new FormData();
+            formData.append('Action', 'eliminarPelicula');
+            formData.append('id', peliculaId);
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', url, false);
+
+            try {
+                xhr.send(formData);
+            if (xhr.status != 200) {
+                alert(`Error ${xhr.status}: ${xhr.statusText}`);
+            } else {
+                if(xhr.response=='OK') {
+                    alert("Se ha eliminado la película");
+                    setTimeout(function(){ window.location.href = "users.php"; }, 1000);
+                }
+                else
+                    alert("Hubo un error eliminado el usuario");
+            }
+            } catch(err) {
+                alert("Request failed");
+            }
+        }
     </script>
 
 </body>

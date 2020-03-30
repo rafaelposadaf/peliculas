@@ -78,4 +78,25 @@ if($_POST['Action']=="actualizarUsuario")
     die();
 }
 
+if($_POST['Action']=="eliminarUsuario")
+{
+    //validacion backend de los datos
+    if(!isset($_POST['id'])) {
+        echo "";
+        die();
+    }
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM users WHERE id=?";
+    $pdo->prepare($sql)->execute([$id]);
+
+    //cerramos conexión base de datos y sentencia
+    $sentencia_sql = null;
+    $pdo = null;
+
+    //Imprimimos respuesta operación
+    echo "OK";
+    die();
+}
+
 ?>

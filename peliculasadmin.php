@@ -17,6 +17,7 @@ if(!isset($_SESSION['myusername']))
         $pelicula = $sentencia_sql->fetch();
         $titulo=$pelicula['titulo'];
         $sinopsis=$pelicula['sinopsis'];
+        $anio_lanzada=$pelicula['anio_lanzada'];
         $movie_id=$pelicula['id'];
 
         $titulo_pagina="Editar película";
@@ -58,7 +59,7 @@ if(!isset($_SESSION['myusername']))
                 <input type="number" class="form-control" id="anio_lanzada" value="<?php echo $anio_lanzada; ?>" placeholder="Año">
             </div>
             <input type="hidden" id="movie_id" name="movie_id" value="<?php echo $movie_id; ?>">
-            <button type="button" onclick="validarPelicula()" class="btn btn-success">Guardar</button>
+            <button type="button" onclick="validarPelicula()" class="btn btn-<?php echo $color_boton; ?>"><?php echo $nombre_boton; ?> </button>
         </form>
     </div>
 
@@ -80,8 +81,6 @@ if(!isset($_SESSION['myusername']))
             guardarDatos();
         else
             actualizarDatos();
-
-        //recargar datos
     }
 
     function validarTitulo()

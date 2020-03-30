@@ -58,12 +58,11 @@ $gsent->execute();
                     <td><?php echo $user['nickname']; ?></td>
                     <td>
                         <a type="button" href="usersadmin.php?id=<?php echo $user['id']; ?>" class="btn btn-warning btn-sm">editar</a>
-                        <a type="button" href="index.php&id=<?php echo $user['id']; ?>" class="btn btn-danger btn-sm">eliminar</a>
+                        <a type="button" onclick="eliminarUsuario(<?php echo $user['id']; ?>)" class="btn btn-danger btn-sm">eliminar</a>
                     </td>
                 </tr>
                 <?php
             }
-
                 ?>
             </tbody>
         </table>
@@ -74,6 +73,37 @@ $gsent->execute();
         $(document).ready( function () {
             $('#table_id').DataTable();
         } );
+
+        function eliminarUsuario(userId)
+        {
+            r=confirm("Esta seguro que desea eliminar este usuario?");
+            if(!r)
+                return;
+            url= './Controllers/usersController.php';
+            let formData = new FormData();
+            formData.append('Action', 'eliminarUsuario');
+            formData.append('id', userId);
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', url, false);
+
+            try {
+                xhr.send(formData);
+            if (xhr.status != 200) {
+                alert(`Error ${xhr.status}: ${xhr.statusText}`);
+            } else {
+                if(xhr.response=='OK') {
+                    alert("Se ha eliminado el usuario");
+                    setTimeout(function(){ window.location.href = "peliculas.php"; }, 1000);
+                }
+                else
+                    alert("Hubo un error eliminado el usuario");
+            }
+            } catch(err) {
+                alert("Request failed");
+            }
+        }
     </script>
 
 </body>

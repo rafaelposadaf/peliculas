@@ -79,10 +79,10 @@ if(!isset($_SESSION['myusername']))
             return;
 
         //validar usuario ajax
-        /*hola=validarNickname();
-        alert(hola);
-        if(!validarNickname()) //en caso de ser falso no continua
-            return;*/
+        if(!validarNickname()) { //en caso de ser falso no continua
+            alert('El usuario ya se encuentra asignado');
+            return;
+        }
         //validar contraseña
         if($('#password').val() != $('#repeat_password').val()) {
             alert('Las constraseñas ingresadas no coinciden');
@@ -111,8 +111,10 @@ if(!isset($_SESSION['myusername']))
         if (xhr.status != 200) {
             alert(`Error ${xhr.status}: ${xhr.statusText}`);
         } else {
-            if(xhr.response==0);
+            if(xhr.response=='0')
                 return true;
+            else
+                return false;
         }
         } catch(err) {
             alert("Request failed");
@@ -128,6 +130,7 @@ if(!isset($_SESSION['myusername']))
         if(respuesta=='OK') {
 
             alert("Usuario guardado exitosamente");
+            alert("La pantalla se queda inmovil ya que se realiza por AJAX");
             //vaciar campos
             limpiarCampos();
         }
@@ -143,6 +146,7 @@ if(!isset($_SESSION['myusername']))
         if(respuesta=='OK') {
 
             alert("Usuario actualizado exitosamente");
+            alert("La pantalla se queda inmovil ya que se realiza por AJAX");
             //limpiarCampos();
         }
         else
